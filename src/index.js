@@ -70,6 +70,8 @@ async function onClickBtn() {
   catch (error) {
     console.log(error);
   }
+
+  
 }
 
 function requestApiMarkup(hits) {
