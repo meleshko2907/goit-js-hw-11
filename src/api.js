@@ -26,7 +26,7 @@ export default class ApiServer {
   }
 
   totalHitsMessage() {
-    return this.perPage * this.page;
+    return this.perPage * (this.page - 1);;
   }
 
   incrementPage() {
