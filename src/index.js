@@ -51,27 +51,29 @@ async function onSearch(evt) {
 }
 
 async function onClickBtn() {
-  if (apiServer.query === '') {
-    return;
-  } else if (apiServer.totalHits <= apiServer.totalHitsMessage()) {
+  checkIfOutOfResults();
+
+  try {
+    const hits = await apiServer.requestApi();
+    requestApiMarkup(hits);
+    lightbox.refresh();
+    apiServer.incrementPage();
+  } catch (error) {
+    console.log(error);
+  }
+
+  checkIfOutOfResults();
+}
+
+function checkIfOutOfResults() {
+  const isOutOfResults = apiServer.totalHits <= apiServer.totalHitsMessage();
+
+  if (isOutOfResults) {
     Notiflix.Notify.info(
       `We're sorry, but you've reached the end of search results.`
     );
     loadMoreBtn.hide();
-    return;
   }
-
-  try{
-  const hits = await apiServer.requestApi();
-  requestApiMarkup(hits);
-  lightbox.refresh();
-  apiServer.incrementPage();
-  }
-  catch (error) {
-    console.log(error);
-  }
-
-  
 }
 
 function requestApiMarkup(hits) {
